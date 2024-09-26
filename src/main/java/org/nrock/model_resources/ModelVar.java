@@ -1,4 +1,4 @@
-package org.example.Resources;
+package org.nrock.model_resources;
 
 public class ModelVar {
 

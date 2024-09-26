@@ -1,11 +1,8 @@
-package org.example;
+package org.nrock;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.function.IntFunction;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.google.ortools.Loader;
 import com.google.ortools.sat.CpModel;
 import com.google.ortools.sat.CpSolver;
 import com.google.ortools.sat.CpSolverStatus;
@@ -13,24 +10,27 @@ import com.google.ortools.sat.CpSolverStatus;
 public class PreModel {
 
     //constants
-    static int TIMESLOT_LENGTH = 5;
+    public static int TIMESLOT_LENGTH = 5;
     static int DAYS_IN_ADAVANCE = 7;
     static IntStream DAYS_AVAILABLE = IntStream.range(0, DAYS_IN_ADAVANCE);
     static IntStream TIMESLOTS = IntStream.range(0, 1440/TIMESLOT_LENGTH);
+    public static String cur_day_of_week;
 
 
-
-    ArrayList<Task> tasks_to_schedule = new ArrayList<>();
+    public ArrayList<Task> tasks_to_schedule = new ArrayList<>();
     HashMap<Integer, Integer> task_weights = new HashMap<>();
     CpModel model = new CpModel();
     CpSolver solver = new CpSolver();
     CpSolverStatus status;
 
     public PreModel(ArrayList<Task> tasks_to_schedule) {
+        this();
         this.tasks_to_schedule.addAll(tasks_to_schedule);
+
     }
     public PreModel() {
-
+        DAYS_AVAILABLE = IntStream.range(0, DAYS_IN_ADAVANCE);
+        TIMESLOTS = IntStream.range(0, 1440/TIMESLOT_LENGTH);
     }
 
     static public boolean checkTaskViability(Task task) {
@@ -72,7 +72,7 @@ public class PreModel {
     public void load_tasks(ArrayList<Task> tasks_to_load) {
         for (Task task : tasks_to_load) {
             if (checkTaskViability(task)) tasks_to_schedule.add(task);
-            System.out.printf("%s   %s   %s %n", task.id, task.duration, task.hasHardDueDate);
+            //System.out.printf("%s   %s   %s %n", task.id, task.duration, task.hasHardDueDate);
         }
         tasks_to_schedule.forEach(PreModel::taskProcessor);
         //tasks_to_schedule.addAll(tasks_to_load);

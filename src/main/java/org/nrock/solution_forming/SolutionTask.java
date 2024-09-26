@@ -1,4 +1,4 @@
-package org.example;
+package org.nrock.solution_forming;
 
 import java.util.ArrayList;
 

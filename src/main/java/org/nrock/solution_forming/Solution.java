@@ -1,12 +1,13 @@
-package org.example;
+package org.nrock.solution_forming;
 
 import java.util.ArrayList;
 
 public class Solution {
 
-    static ArrayList<Solution> solutions = new ArrayList<>();
+    public static ArrayList<Solution> solutions = new ArrayList<>();
     ArrayList<SolutionTask> tasks = new ArrayList<>();
-    final int id;
+    public int sol_tol_pen = 0;
+    public final int id;
 
     public Solution(int id) {
         solutions.add(this);
@@ -16,6 +17,8 @@ public class Solution {
     public void addTask(SolutionTask task) {
 
         tasks.add(task);
+        sol_tol_pen += task.total_penalty;
+
 
     }
 
