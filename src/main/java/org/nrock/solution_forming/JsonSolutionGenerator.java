@@ -53,7 +53,7 @@ public class JsonSolutionGenerator {
             sol_str.append(end_task_str);
             whole_json.append(sol_str);
         }
-        String end_whole_json = String.format("]}");
+        String end_whole_json = "]}";
         whole_json.append(end_whole_json);
         json_file = String.valueOf(whole_json);
 

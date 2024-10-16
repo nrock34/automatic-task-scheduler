@@ -66,7 +66,7 @@ public class Task {
 
         this.hasCustomSchedule = true;
 
-        taskBlockedTimes.addAll(Scheduler.setupBlockedTimes(customSchedule, PreModel.cur_day_of_week));
+        taskBlockedTimes.addAll(Scheduler.setupBlockedTimes(customSchedule, PreModel.cur_day_of_week, true));
         task_list.add(this);
         numOfTasks++;
         max_weight = Math.max(urgency, max_weight);
@@ -75,7 +75,7 @@ public class Task {
 
     public void addcustomschedule(Schedule schedule, boolean bypassRegBlockedTime) {
         this.customSchedule = schedule;
-        taskBlockedTimes.addAll(Scheduler.setupBlockedTimes(customSchedule, PreModel.cur_day_of_week));
+        taskBlockedTimes.addAll(Scheduler.setupBlockedTimes(customSchedule, PreModel.cur_day_of_week, true));
         this.hasCustomSchedule = true;
         this.bypassRegBlockedTime = bypassRegBlockedTime;
     }

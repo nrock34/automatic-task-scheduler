@@ -2,16 +2,17 @@ package org.nrock;
 
 import com.google.ortools.Loader;
 import org.nrock.scheduler_resources.Schedule;
+import org.nrock.scheduler_resources.Scheduler;
 import org.nrock.solution_forming.Solution;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class AutoTaskScheduler {
 
 
     static boolean isRunning = false;
     private boolean tasksloaded = false;
+    private boolean schedulesloaded = false;
     private boolean modelInError = false;
 
     private ArrayList<String> log = new ArrayList<String>();
@@ -38,10 +39,6 @@ public class AutoTaskScheduler {
 
 
     public AutoTaskScheduler(int length_of_timeslot, int days_in_advance, String day_of_week) {
-
-//        PreModel.TIMESLOT_LENGTH = length_of_timeslot;
-//        PreModel.DAYS_IN_ADAVANCE = days_in_advance;
-//        PreModel.cur_day_of_week = day_of_week;
 
         this.timeslotLength = length_of_timeslot;
         this.daysInAdvance = days_in_advance;
@@ -238,7 +235,10 @@ public class AutoTaskScheduler {
 
     public void setTaskCustomSchedule(Task task, Schedule schedule, boolean independentSchedule) {
 
-        if (!tasksloaded) task.addcustomschedule(schedule, independentSchedule);
+        if (!tasksloaded) {
+            task.addcustomschedule(schedule, independentSchedule);
+            schedulestobeadded.remove(schedule);
+        }
         else System.out.println("Can not alter tasks after tasks have been loaded");
 
     }
@@ -253,7 +253,19 @@ public class AutoTaskScheduler {
         if (!tasksloaded) {
             model.load_tasks(taskscreated);
             tasksloaded = true;
+            taskscreated.clear();
         } else System.out.println("[ERROR] - Can not load tasks after tasks have been loaded");
+
+    }
+
+    public void loadSchedules() {
+
+        if (!tasksloaded) {
+            for (Schedule schd: schedulestobeadded) {
+                Scheduler.setupBlockedTimes(schd, dayOfWeek, false);
+                schedulestobeadded.remove(schd);
+            }
+        }
 
     }
 
@@ -271,20 +283,17 @@ public class AutoTaskScheduler {
     }
 
     public void gatherSolutions() {
+        gatherSolutions(false);
+    }
+    public void gatherSolutions(boolean getTopThree) {
 
         if (!tasksloaded) throw new RuntimeException("Model has not been run yet.");
         if (isRunning) throw new RuntimeException("Model Still Running");
         for (Solution sol : Solution.solutions) {
             System.out.println(sol.id + " penalty:  " + sol.sol_tol_pen);
         }
-    }
-
-    public void gatherTopFiveSolutions() {
 
     }
-
-
-
 
 
 

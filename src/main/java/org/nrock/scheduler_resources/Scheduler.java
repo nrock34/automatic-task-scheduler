@@ -1,12 +1,10 @@
 package org.nrock.scheduler_resources;
 
-import org.nrock.Main;
 import org.nrock.PreModel;
 import org.nrock.model_resources.BlockedTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Scheduler {
 
@@ -44,7 +42,7 @@ public class Scheduler {
 
     }
 
-    public void setupBlockedTimes(Schedule schedule) {
+    public void setupBlockedTimes(Schedule schedule, boolean forTask) {
 
         HashMap<String, int[]> avail_times_for_day = schedule.daylist;
         HashMap<String, Integer> daytonum = new HashMap<String, Integer>();
@@ -62,18 +60,18 @@ public class Scheduler {
             int newday = (daytonum.get(k) + difference) % 7;
 
             if(avail_times_for_day.get(k)[0] > 1410) {
-                new BlockedTime(newday);
+                new BlockedTime(forTask, newday);
             }
             else {
-                new BlockedTime(newday, 0, avail_times_for_day.get(k)[0]);
-                new BlockedTime(newday, avail_times_for_day.get(k)[1], 1440);
+                new BlockedTime(forTask, newday, 0, avail_times_for_day.get(k)[0]);
+                new BlockedTime(forTask, newday, avail_times_for_day.get(k)[1], 1440);
             }
 
         }
 
     }
 
-    public static ArrayList<BlockedTime> setupBlockedTimes(Schedule schedule, String current_day_of_week) {
+    public static ArrayList<BlockedTime> setupBlockedTimes(Schedule schedule, String current_day_of_week, boolean forTask) {
 
         ArrayList<BlockedTime> blockedtimes = new ArrayList<>();
 
@@ -92,10 +90,10 @@ public class Scheduler {
             int newday = (daytonum.get(k) - daytonum.get(current_day_of_week) + 7) % 7;
             System.out.println("\n" + newday + " " + difference );
             if(avail_times_for_day.get(k)[0] > 1410) {
-                blockedtimes.add(new BlockedTime(newday));
+                blockedtimes.add(new BlockedTime(forTask, newday));
             } else {
-                blockedtimes.add(new BlockedTime(true, newday, 0, avail_times_for_day.get(k)[0]));
-                blockedtimes.add(new BlockedTime(true, newday, avail_times_for_day.get(k)[1], 1440));
+                blockedtimes.add(new BlockedTime(forTask, newday, 0, avail_times_for_day.get(k)[0]));
+                blockedtimes.add(new BlockedTime(forTask, newday, avail_times_for_day.get(k)[1], 1440));
             }
         }
 

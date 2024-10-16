@@ -29,6 +29,9 @@ public class BlockedTime {
         this.start_time = s;
         this.end_time = e;
         this.on_day = d;
+        if (!forTask) {
+            blocked_times.add(this);
+        }
     }
 
     public BlockedTime (int d) {
@@ -36,6 +39,15 @@ public class BlockedTime {
         this.end_time = 1440;
         this.on_day = d;
         blocked_times.add(this);
+    }
+
+    public BlockedTime (boolean forTask, int d) {
+        this.start_time = 1;
+        this.end_time = 1440;
+        this.on_day = d;
+        if (!forTask) {
+            blocked_times.add(this);
+        }
     }
 
 
