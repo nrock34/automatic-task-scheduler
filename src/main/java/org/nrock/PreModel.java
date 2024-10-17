@@ -7,6 +7,11 @@ import com.google.ortools.sat.CpModel;
 import com.google.ortools.sat.CpSolver;
 import com.google.ortools.sat.CpSolverStatus;
 
+/**
+ * Provides a framework for scheduling tasks, with features for checking task viability
+ * and loading tasks into a schedule. It utilizes the Google OR-Tools library for
+ * constraint programming.
+ */
 public class PreModel {
 
     //constants
@@ -33,6 +38,24 @@ public class PreModel {
         TIMESLOTS = IntStream.range(0, 1440/TIMESLOT_LENGTH);
     }
 
+    /**
+     * Verifies the viability of a task based on its properties, including due time,
+     * preferred start time, due day, duration, and padding, ensuring they adhere to
+     * specific constraints and ranges. It returns true if the task is viable and false
+     * otherwise.
+     *
+     * @param task object being checked for viability, containing attributes such as due
+     * time, preferred start time, due day, duration, and padding.
+     *
+     * Destructure `task` to reveal its properties:
+     * - `due_time`: represents a time in seconds, must be non-negative
+     * - `pref_start`: represents a preferred start time in seconds, must be non-negative
+     * when specified
+     * - `due_day`: represents a day to complete a task, must be non-negative when specified
+     * - `duration`: represents the task duration in seconds, must be non-negative
+     *
+     * @returns a boolean value indicating task viability, true for viable, false otherwise.
+     */
     static public boolean checkTaskViability(Task task) {
        if (task.due_time != -1 && task.pref_start != -1 && task.due_day == 0) {
            if (!(task.pref_start < task.due_time)) return false;
@@ -50,6 +73,16 @@ public class PreModel {
        return true;
     }
 
+    /**
+     * Validates a scheduler model by checking if the total duration of tasks plus padding
+     * does not exceed a certain limit, calculated as 1440 minutes multiplied by the
+     * number of days in advance.
+     *
+     * @param model SchedulerModel being checked for validity.
+     *
+     * @returns a boolean value indicating whether the model's total duration is within
+     * the specified limit.
+     */
     static public boolean modelValidityCheck(SchedulerModel model) {
 
         int total_durations=0;
@@ -60,6 +93,13 @@ public class PreModel {
 
     }
 
+    /**
+     * Scales task properties by a fixed TIMESLOT_LENGTH. It adjusts duration, due_time,
+     * pref_start, and padding to fit within a defined time slot, clamping negative values
+     * to -1 and non-zero values to the nearest TIMESLOT_LENGTH.
+     *
+     * @param task object that is being processed and modified by the function.
+     */
     static public void taskProcessor(Task task) {
 
         task.duration = task.duration < TIMESLOT_LENGTH ? 1 : task.duration/TIMESLOT_LENGTH;
@@ -69,6 +109,12 @@ public class PreModel {
 
     }
 
+    /**
+     * Filters a list of tasks based on their viability, adds viable tasks to a separate
+     * list, and then processes each task in the list using the `taskProcessor` method.
+     *
+     * @param tasks_to_load collection of tasks to be processed and filtered for scheduling.
+     */
     public void load_tasks(ArrayList<Task> tasks_to_load) {
         for (Task task : tasks_to_load) {
             if (checkTaskViability(task)) tasks_to_schedule.add(task);
@@ -78,6 +124,14 @@ public class PreModel {
         //tasks_to_schedule.addAll(tasks_to_load);
     }
 
+    /**
+     * Processes a given task by calling the `taskProcessor` method and checks its viability
+     * with `checkTaskViability`. If viable, the task is added to the `tasks_to_schedule`
+     * collection.
+     *
+     * @param task_to_load task to be processed and potentially added to the `tasks_to_schedule`
+     * collection.
+     */
     public void load_task(Task task_to_load) {
         taskProcessor(task_to_load);
         if (checkTaskViability(task_to_load)) tasks_to_schedule.add(task_to_load);
