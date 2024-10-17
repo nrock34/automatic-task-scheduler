@@ -4,6 +4,10 @@ import com.google.ortools.sat.CpSolverSolutionCallback;
 import org.nrock.SchedulerModel;
 import org.nrock.Task;
 
+/**
+ * Extends CpSolverSolutionCallback to process and record solution callbacks from a
+ * constraint programming solver.
+ */
 public class SolutionPrinter extends CpSolverSolutionCallback{
 
     private final SchedulerModel model;
@@ -17,6 +21,10 @@ public class SolutionPrinter extends CpSolverSolutionCallback{
     }
 
 
+    /**
+     * Updates a solution object with new task data from the model, incrementing the
+     * solution count and creating a new Solution object for each solution made.
+     */
     @Override
     public void onSolutionCallback() {
 

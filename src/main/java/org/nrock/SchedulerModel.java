@@ -10,6 +10,12 @@ import org.nrock.solution_forming.SolutionPrinter;
 
 import java.util.ArrayList;
 
+/**
+ * Defines a scheduling model using the Google OR-Tools library, allowing for
+ * optimization of task assignments across days and time slots.
+ * It uses a linear programming approach to minimize penalties based on task preferences
+ * and constraints.
+ */
 public class SchedulerModel extends PreModel{
 
     ArrayList<org.nrock.model_resources.ModelVar> model_variables = new ArrayList<>();
@@ -27,6 +33,11 @@ public class SchedulerModel extends PreModel{
         super();
     }
 
+    /**
+     * Initializes model variables for tasks to be scheduled, including start and end
+     * times, assigned days, and penalty variables for due day, preferred day, and time
+     * violations.
+     */
     void initModelVariables() {
 
         this.timeslots_max = TIMESLOTS.max().orElse(0);
@@ -55,6 +66,11 @@ public class SchedulerModel extends PreModel{
         }
     }
 
+    /**
+     * Defines a scheduling model by adding constraints to a linear or integer program.
+     * It models task scheduling with various constraints, such as due dates, preferred
+     * start days, time penalties, and blocked time intervals.
+     */
     void defineModel() {
         for (Task task : tasks_to_schedule) {
 
@@ -156,6 +172,18 @@ public class SchedulerModel extends PreModel{
 
     }
 
+    /**
+     * Calculates the sum of time penalties and preference day penalties for a set of
+     * tasks. It returns the total sum based on the provided option, which can be either
+     * the sum of both penalties or one of them.
+     *
+     * @param opt option to select the type of penalties to be summed, with values 0, 1,
+     * and 2 corresponding to total, time, and preference day penalties, respectively.
+     *
+     * @returns a sum of penalty values, either total penalties or task-specific penalties.
+     *
+     * Returns an array of two LinearArgument values.
+     */
     LinearArgument gatherPenaltySums(int opt) {
 
         LinearArgument[] tm_penalties = tasks_to_schedule.stream()
@@ -185,6 +213,13 @@ public class SchedulerModel extends PreModel{
         }
     }
 
+    /**
+     * Configures solver parameters for optimization, sets up a model for minimization,
+     * and solves it using a callback function to track the status.
+     *
+     * @param opt option or configuration that influences the behavior of the `gatherPenaltySums`
+     * method, which is used to calculate the penalty sums for the model.
+     */
     void firstRun(int opt) {
         solver.getParameters().setLogSearchProgress(true);
         //solver.getParameters().setNumWorkers(10);
@@ -196,6 +231,17 @@ public class SchedulerModel extends PreModel{
         this.status = solver.solveWithSolutionCallback(model, cb);
 
     }
+    /**
+     * Clears model hints, adds task hints based on task attributes, minimizes the model
+     * objective, and solves the model using a solver. The objective function changes
+     * based on the `opt` parameter, and the solver's behavior changes based on the
+     * `lastrn` parameter.
+     *
+     * @param opt optimization objective, determining the specific penalty to be minimized.
+     *
+     * @param lastrn condition that determines whether the solver should be passed a
+     * callback object (`cb`) when solving the model.
+     */
     void optimizeModel(int opt, boolean lastrn) {
 
         model.clearHints();
@@ -224,6 +270,11 @@ public class SchedulerModel extends PreModel{
 
     }
 
+    /**
+     * Executes a series of model-related operations when called, including validity
+     * checks, initialization, definition, first run, and optimization. The optimization
+     * process is performed multiple times with varying parameters.
+     */
     public void runModel() {
 
         if (!modelValidityCheck(this)) return;

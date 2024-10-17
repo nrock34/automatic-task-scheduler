@@ -4,6 +4,16 @@ import com.google.ortools.sat.IntVar;
 
 import java.util.HashMap;
 
+/**
+ * Stores and manages task-specific integer variables.
+ *
+ * - pref_day_penalties (HashMap<Integer, IntVar>): is a static HashMap that stores
+ * mappings of task IDs to IntVars.
+ *
+ * - task_id (int): stores an integer value.
+ *
+ * - int_var (IntVar): Represents a variable of type IntVar.
+ */
 public class PrefDayPenalties extends ModelVar {
 
     public static HashMap<Integer, IntVar> pref_day_penalties = new HashMap<Integer, IntVar>();

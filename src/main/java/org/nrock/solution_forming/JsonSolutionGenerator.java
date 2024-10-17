@@ -3,12 +3,23 @@ package org.nrock.solution_forming;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Generates a JSON file named "solutions.json" from a collection of solutions.
+ * The JSON file represents a list of solutions, each containing a list of tasks with
+ * associated penalties.
+ * The JSON file is written to the file system.
+ */
 public class JsonSolutionGenerator {
 
     public final int o = 0;
     static String json_file;
 
 
+    /**
+     * Generates a JSON string representing a list of solutions, where each solution
+     * contains a list of tasks with their penalties. The JSON string is then written to
+     * a file using the `writeJson` function.
+     */
     static public void gen() {
         int idx = 0;
         int idx2 = 0;
@@ -60,6 +71,12 @@ public class JsonSolutionGenerator {
         writeJson();
     }
 
+    /**
+     * Writes a JSON file named "solutions.json" to the current directory using the
+     * contents of the `json_file` variable. If the operation is successful, it prints a
+     * success message to the console. If an error occurs, it catches the exception and
+     * prints the error stack trace.
+     */
     static void writeJson() {
 
         try (FileWriter fileWriter = new FileWriter("solutions.json")) {

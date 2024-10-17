@@ -5,7 +5,20 @@ import org.nrock.solution_forming.SolutionPrinter;
 
 import java.util.ArrayList;
 
+/**
+ * It initializes native libraries and generates tasks, runs a scheduling model, and
+ * prints task details and execution time.
+ */
 public class Main {
+    /**
+     * Loads native libraries, generates tasks, runs a scheduler model, generates a JSON
+     * solution, and prints task details and execution time.
+     *
+     * @param args command-line arguments passed to the program, which are ignored in
+     * this function.
+     *
+     * The `args` variable is an array of type `String[]`.
+     */
     public static void main(String[] args) {
         Loader.loadNativeLibraries();
 

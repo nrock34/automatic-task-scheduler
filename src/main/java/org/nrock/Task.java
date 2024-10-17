@@ -6,6 +6,10 @@ import org.nrock.scheduler_resources.Scheduler;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a task with attributes and methods to manage its schedule and blocked
+ * times.
+ */
 public class Task {
 
     static ArrayList<Task> task_list = new ArrayList<>();
@@ -73,6 +77,15 @@ public class Task {
 
     }
 
+    /**
+     * Sets a custom schedule, adds blocked times to the task list, and updates flags to
+     * indicate the custom schedule and bypassed regular blocked time.
+     *
+     * @param schedule custom schedule to be added, replacing the existing schedule.
+     *
+     * @param bypassRegBlockedTime option to bypass regular blocked times when setting
+     * up the custom schedule.
+     */
     public void addcustomschedule(Schedule schedule, boolean bypassRegBlockedTime) {
         this.customSchedule = schedule;
         taskBlockedTimes.addAll(Scheduler.setupBlockedTimes(customSchedule, PreModel.cur_day_of_week, true));

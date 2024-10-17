@@ -3,6 +3,10 @@ import org.nrock.PreModel;
 
 import java.util.ArrayList;
 
+/**
+ * It manages blocked time slots for days, adjusting them to fit a specified timeslot
+ * length.
+ */
 public class BlockedTime {
 
     public static ArrayList<BlockedTime> blocked_times = new ArrayList<>();
@@ -11,6 +15,11 @@ public class BlockedTime {
     public int start_time;
     public int end_time;
 
+    /**
+     * Modifies the start and end times of each BlockedTime object in the blocked_times
+     * collection to align with a predefined timeslot length, rounding down to the nearest
+     * timeslot if the time is less than 5 units into the timeslot.
+     */
     public static void adjustfortimeslot() {
         for (BlockedTime blockedTime : blocked_times) {
             blockedTime.start_time = blockedTime.start_time % PreModel.TIMESLOT_LENGTH >= 5 ? blockedTime.start_time / PreModel.TIMESLOT_LENGTH : 0;
