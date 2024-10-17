@@ -1,9 +1,19 @@
-package org.example.Resources;
+package org.nrock.model_resources;
 
 import com.google.ortools.sat.IntVar;
 
 import java.util.HashMap;
 
+/**
+ * Stores and manages time penalties related to tasks using a HashMap of IntVars.
+ *
+ * - time_penalties (HashMap<Integer, IntVar>): stores a static mapping of task IDs
+ * to IntVar objects.
+ *
+ * - task_id (int): stores a unique integer identifier.
+ *
+ * - int_var (IntVar): is an integer variable.
+ */
 public class TimePenalties extends ModelVar {
 
     public static HashMap<Integer, IntVar> time_penalties = new HashMap<Integer, IntVar>();

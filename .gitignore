@@ -36,3 +36,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/.quarkus/cli/plugins/quarkus-cli-catalog.json
+/.idea/uiDesigner.xml
+/solutions.json

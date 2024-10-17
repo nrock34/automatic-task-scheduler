@@ -1,7 +1,28 @@
-package org.example;
+package org.nrock.solution_forming;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a task with associated penalties and is designed to be added to a static
+ * list of solutions.
+ *
+ * - solutions (ArrayList<SolutionTask>): stores a list of SolutionTask objects.
+ *
+ * - start_time (int): represents the start time.
+ *
+ * - end_time (int): represents the end time of a task.
+ *
+ * - assigned_day (int): represents the day assigned to a task.
+ *
+ * - due_day_penalty (int): represents a penalty.
+ *
+ * - pref_day_penalty (int): Represents a penalty.
+ *
+ * - time_penalty (int): represents a penalty associated with time.
+ *
+ * - total_penalty (int): Calculates the sum of due_day_penalty, pref_day_penalty,
+ * and time_penalty.
+ */
 public class SolutionTask {
 
     static ArrayList<SolutionTask> solutions = new ArrayList<>();

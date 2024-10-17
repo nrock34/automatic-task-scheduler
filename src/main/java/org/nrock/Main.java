@@ -1,18 +1,28 @@
-package org.example;
+package org.nrock;
 import com.google.ortools.Loader;
-import com.google.ortools.sat.CpModel;
-import com.google.ortools.sat.CpSolver;
-import com.google.ortools.sat.CpSolverStatus;
-import com.google.ortools.sat.IntVar;
+import org.nrock.solution_forming.JsonSolutionGenerator;
+import org.nrock.solution_forming.SolutionPrinter;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+/**
+ * It initializes native libraries and generates tasks, runs a scheduling model, and
+ * prints task details and execution time.
+ */
 public class Main {
+    /**
+     * Loads native libraries, generates tasks, runs a scheduler model, generates a JSON
+     * solution, and prints task details and execution time.
+     *
+     * @param args command-line arguments passed to the program, which are ignored in
+     * this function.
+     *
+     * The `args` variable is an array of type `String[]`.
+     */
     public static void main(String[] args) {
         Loader.loadNativeLibraries();
 
-        ArrayList<Task> tg = TaskGenerator.generateTasks(100, 90, 10, 0);
+        ArrayList<Task> tg = TaskGenerator.generateTasks(2, 30, 10, 0);
         ArrayList<Task> ttg = new ArrayList<>();
         SchedulerModel model = new SchedulerModel();
         Task task = new Task(
@@ -25,6 +35,7 @@ public class Main {
                 -1, -1, -1,
                 5, 0, false, false
         );
+
         ttg.add(task3);
         ttg.add(task);
         long start = System.nanoTime();
